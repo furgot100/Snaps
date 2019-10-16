@@ -31,4 +31,15 @@ def onboarding_message(**payload):
 
     start_onboarding(web_client, user_id, channel)
 
-    
+@slack.RTMClient.run_on(event="reaction_added")
+def update_emoji(**payload):
+    # Checks for reaction added and changes timestamp
+
+    data = payload["data"]
+    web_client = payload["web_client"]
+    channel_id = data["item"]["channel"]
+    user_id = data["user"]
+
+    snaps = snaps_sent[channel_id][user_id]
+
+    snaps.reaction_task_completed = True
