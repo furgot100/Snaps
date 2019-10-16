@@ -1,6 +1,6 @@
 import os
-import slack
 import logging
+import slack
 import ssl as ssl_lib
 import certifi
 from snaps import OnboardingTutorial
@@ -82,3 +82,10 @@ def message(**payload):
 
     if text and text.lower() == "start":
         return start_onboarding(web_client, user_id, channel_id)
+
+
+if __name__ == "__main__":
+    ssl_context = ssl_lib.create_default_context(cafile=certifi.where())
+    slack_token = os.environ["SLACK_BOT_TOKEN"]
+    rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context)
+    rtm_client.start()
