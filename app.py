@@ -43,3 +43,42 @@ def update_emoji(**payload):
     snaps = snaps_sent[channel_id][user_id]
 
     snaps.reaction_task_completed = True
+
+    message = snaps.get_message_payload()
+
+    update_message = web_client.chat_update(**message)
+
+    snaps.timestamp = update_message["ts"]
+
+
+@slack.RTMClient.run_on(event="pin_added")
+def update_pin(**payload):
+    #Adds pinned message and updates time stamp
+
+    data = payload["data"]
+    web_client = payload["web_client"]
+    channel_id = data["channel_id"]
+    user_id = data["data"]
+
+    snaps = snaps_sent[channel_id][user_id]
+
+    snaps.pin_task_completed = True
+
+    message = snaps.get_message_payload()
+
+    updated_message = web_client.chat_update(**message)
+
+    snaps.timestamp = updated_message["ts"]
+
+@slack.RTMClient.run_on(event="message")
+def message(**payload):
+    #Displays response after "start" message
+
+    data = payload["data"]
+    web_client = payload["web_client"]
+    channel_id = data.get("channel")
+    user_id = data.get("user")
+    text = data.get("text")
+
+    if text and text.lower() == "start":
+        return start_onboarding(web_client, user_id, channel_id)
