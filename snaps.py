@@ -1,16 +1,35 @@
 class OnboardingTutorial:
-    #Construct onboarding message
-    welcome_block = {
-        "type" : "section",
-        "text" : {
-            "type" : "mrkdwn",
-            "text" : (
+    """Constructs the onboarding message and stores the state of which tasks were completed."""
+
+    WELCOME_BLOCK = {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": (
                 "Welcome to Slack! :wave: We're so glad you're here. :blush:\n\n"
                 "*Get started by completing the steps below:*"
             ),
         },
+        "accessory": {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "emoji": True,
+                "text": ":clap:"
+            },
+            "value": "click_me_123"
+        }
     }
-    divider_block = {"type": "divider"}
+
+    OTHER_BLOCK ={
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "A message *with some bold text* and _some italicized text_."
+        }
+    }
+
+    DIVIDER_BLOCK = {"type": "divider"}
 
     def __init__(self, channel):
         self.channel = channel
@@ -18,23 +37,24 @@ class OnboardingTutorial:
         self.icon_emoji = ":robot_face:"
         self.timestamp = ""
         self.reaction_task_completed = False
-        self.pin_task_completed = False 
-    
-    #gets message
+        self.pin_task_completed = False
+
     def get_message_payload(self):
         return {
-            "ts" : self.timestamp,
-            "channel" : self.channel,
-            "username" : self.username,
-            "icon_emoji" : self.icon_emoji,
+            "ts": self.timestamp,
+            "channel": self.channel,
+            "username": self.username,
+            "icon_emoji": self.icon_emoji,
             "blocks": [
-                self.welcome_block,
-                self.divider_block,
+                self.WELCOME_BLOCK,
+                self.OTHER_BLOCK,
+                self.DIVIDER_BLOCK,
                 *self._get_reaction_block(),
-                self.divider_block,
-                *self._get_reaction_block(),
+                self.DIVIDER_BLOCK,
+                *self._get_pin_block(),
             ],
         }
+
     def _get_reaction_block(self):
         task_checkmark = self._get_checkmark(self.reaction_task_completed)
         text = (
@@ -64,12 +84,12 @@ class OnboardingTutorial:
     @staticmethod
     def _get_checkmark(task_completed: bool) -> str:
         if task_completed:
-            return ":white_checkmark:"
+            return ":white_check_mark:"
         return ":white_large_square:"
 
     @staticmethod
     def _get_task_block(text, information):
         return [
             {"type": "section", "text": {"type": "mrkdwn", "text": text}},
-            {"type": "context", "elements":[{"type": "mrkdwn", "text":information}]},
+            {"type": "context", "elements": [{"type": "mrkdwn", "text": information}]},
         ]
