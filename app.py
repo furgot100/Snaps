@@ -112,6 +112,8 @@ def update_pin(**payload):
     # Update the timestamp saved on the onboarding tutorial object
     onboarding_tutorial.timestamp = updated_message["ts"]
 
+def voting():
+
 
 # ============== Message Events ============= #
 # When a user sends a DM, the event type will be 'message'.
@@ -129,6 +131,8 @@ def message(**payload):
 
     if text and text.lower() == "!help":
         return start_onboarding(web_client, user_id, channel_id)
+    elif text and text.lower() == "!vote":
+        
 
 
 if __name__ == "__main__":
