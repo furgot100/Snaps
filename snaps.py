@@ -18,14 +18,14 @@ class OnboardingTutorial:
                 "text": ":clap:"
             },
             "value": "click_me_123"
-        }
+        }  
     }
 
     OTHER_BLOCK ={
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "A message *with some bold text* and _some italicized text_."
+            "text": "Created by Francis Tsang"
         }
     }
 
@@ -93,3 +93,31 @@ class OnboardingTutorial:
             {"type": "section", "text": {"type": "mrkdwn", "text": text}},
             {"type": "context", "elements": [{"type": "mrkdwn", "text": information}]},
         ]
+
+class Voting:
+    STARTING_BLOCK = {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": (
+                "Voting has started!"
+            )
+        }
+    }
+    def __init__(self,channel):
+        self.channel = channel
+        self.username = "TestBot"
+        self.icon_emoji = ":robot_face:"
+        self.timestamp = ""
+
+
+    def get_message_payload(self):
+        return {
+            "ts": self.timestamp,
+            "channel": self.channel,
+            "username": self.username,
+            "icon_emoji": self.icon_emoji,
+            "blocks": [
+                self.STARTING_BLOCK
+            ]
+        }
