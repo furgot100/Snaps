@@ -104,6 +104,31 @@ class Voting:
             )
         }
     }
+    
+    DIVIDER_BLOCK = {"type":"divider"}
+    
+    VOTING_BLOCK ={
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdown",
+                    "text": 
+                }
+            },
+            "accessory": {
+                "type" : "button",
+                "text": {
+                    "type": "plain_text",
+                    "emoji": True,
+                    "text": ":clap:"
+                },
+                "value": "click_me_123"
+            }
+        ]
+    }
+    
+    
     def __init__(self,channel):
         self.channel = channel
         self.username = "TestBot"

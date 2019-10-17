@@ -4,8 +4,11 @@ import slack
 import ssl as ssl_lib
 import certifi
 from snaps import OnboardingTutorial
+from snaps import Voting
 
 onboarding_tutorials_sent = {}
+
+vote_message_sent = {}
 
 
 def start_onboarding(web_client: slack.WebClient, user_id: str, channel: str):
@@ -76,6 +79,7 @@ def update_emoji(**payload):
 
     # Get the new message payload
     message = onboarding_tutorial.get_message_payload()
+    
 
     # Post the updated message in Slack
     updated_message = web_client.chat_update(**message)
@@ -112,7 +116,21 @@ def update_pin(**payload):
     # Update the timestamp saved on the onboarding tutorial object
     onboarding_tutorial.timestamp = updated_message["ts"]
 
-def voting():
+
+#Voting block. It works! Need to display previous message and vote button
+# and the results.
+def voting(web_client: slack.WebClient, user_id: str, channel: str):
+    vote = Voting(channel)
+    
+    message = vote.get_message_payload()
+
+    response = web_client.chat_postMessage(**message)
+
+    voting.timestamp = response["ts"]
+
+    if channel not in vote_message_sent:
+        vote_message_sent[channel] = {}
+    vote_message_sent[channel][id] = vote
 
 
 # ============== Message Events ============= #
@@ -133,6 +151,7 @@ def message(**payload):
         return start_onboarding(web_client, user_id, channel_id)
     elif text and text.lower() == "!vote":
         #added new branch
+        return voting(web_client, user_id, channel_id)
 
 
 if __name__ == "__main__":
