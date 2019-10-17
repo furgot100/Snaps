@@ -31,9 +31,6 @@ def start_onboarding(web_client: slack.WebClient, user_id: str, channel: str):
         onboarding_tutorials_sent[channel] = {}
     onboarding_tutorials_sent[channel][user_id] = onboarding_tutorial
 
-
-# ================ Team Join Event =============== #
-# When the user first joins a team, the type of the event will be 'team_join'.
 # Here we'll link the onboarding_message callback to the 'team_join' event.
 @slack.RTMClient.run_on(event="team_join")
 def onboarding_message(**payload):
@@ -55,14 +52,10 @@ def onboarding_message(**payload):
 
 
 # ============= Reaction Added Events ============= #
-# When a users adds an emoji reaction to the onboarding message,
-# the type of the event will be 'reaction_added'.
 # Here we'll link the update_emoji callback to the 'reaction_added' event.
 @slack.RTMClient.run_on(event="reaction_added")
 def update_emoji(**payload):
-    """Update the onboarding welcome message after receiving a "reaction_added"
-    event from Slack. Update timestamp for welcome message as well.
-    """
+    """Update the onboarding welcome message and timestamp"""
     data = payload["data"]
     web_client = payload["web_client"]
     channel_id = data["item"]["channel"]
@@ -123,7 +116,7 @@ def voting(web_client: slack.WebClient, user_id: str, channel: str):
     vote = Voting(channel)
     
     message = vote.get_message_payload()
-
+    # TODO: Where can we format the message?
     response = web_client.chat_postMessage(**message)
 
     voting.timestamp = response["ts"]
@@ -147,10 +140,13 @@ def message(**payload):
     user_id = data.get("user")
     text = data.get("text")
 
+    print(channel_id)
+
     if text and text.lower() == "!help":
         return start_onboarding(web_client, user_id, channel_id)
-    elif text and text.lower() == "!vote":
+    elif text.lower().startswith('!vote'):
         #added new branch
+        Voting.build_voting_response()
         return voting(web_client, user_id, channel_id)
 
 

@@ -7,18 +7,19 @@ class OnboardingTutorial:
             "type": "mrkdwn",
             "text": (
                 "Welcome to Slack! :wave: We're so glad you're here. :blush:\n\n"
-                "*Get started by completing the steps below:*"
+                "*Get started by completing the steps below:*\n\n"
+                "Or start a vote with the !vote command"
             ),
         },
-        "accessory": {
-            "type": "button",
-            "text": {
-                "type": "plain_text",
-                "emoji": True,
-                "text": ":clap:"
-            },
-            "value": "click_me_123"
-        }  
+        # "accessory": {
+        #     "type": "button",
+        #     "text": {
+        #         "type": "plain_text",
+        #         "emoji": True,
+        #         "text": ":clap:"
+        #     },
+        #     "value": "click_me_123"
+        # }  
     }
 
     OTHER_BLOCK ={
@@ -107,27 +108,36 @@ class Voting:
     
     DIVIDER_BLOCK = {"type":"divider"}
     
-    VOTING_BLOCK ={
-        "blocks": [
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdown",
-                    "text": 
-                }
+    VOTING_BLOCK = {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": ""
             },
             "accessory": {
-                "type" : "button",
+                "type": "button",
                 "text": {
                     "type": "plain_text",
                     "emoji": True,
                     "text": ":clap:"
-                },
+                    },
                 "value": "click_me_123"
-            }
-        ]
-    }
-    
+            },
+            # {
+            #     "type": "context",
+            #     "elements": [
+            #         {
+            #         "type": "mrkdwn",
+            #         "text": "No votes"
+            #     }]
+            #}  
+        }
+
+    @staticmethod
+    def build_voting_response(self, message):
+        option = message.strip('!vote ')
+        print("Poll Option: ", option)
+        self.VOTING_BLOCK["text"]["text"] = option
     
     def __init__(self,channel):
         self.channel = channel
@@ -143,6 +153,7 @@ class Voting:
             "username": self.username,
             "icon_emoji": self.icon_emoji,
             "blocks": [
-                self.STARTING_BLOCK
+                self.STARTING_BLOCK,
+                self.VOTING_BLOCK
             ]
         }
