@@ -7,7 +7,7 @@ This bot was originally a vote where you can vote on messages with a certain com
 It was meant to be an app itself, but due to the time restrictions it turned to a bot.
 It was meant to allow people to vote on messages they believed was important and in the 
 future sort by the messages with the most likes or "claps". Due to my limited knowledge of
-slackbots, I wasn't able to due it. But, I create my first slackbot! 
+slackbots, I wasn't able to due it. But, I create my first slackbot! In the future as I learn more and more I hope I can complete this app and turn it into an app!
 
 1. To start the bot simply clone the repo to your machine.
 2. Go to Slacks API and make a new app here: https://api.slack.com/apps?new_app=1
