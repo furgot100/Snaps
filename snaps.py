@@ -112,7 +112,7 @@ class Voting:
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": ""
+            "text": "I don't work yet. :upside_down_face:"
             },
             "accessory": {
                 "type": "button",
@@ -133,11 +133,11 @@ class Voting:
             #}  
         }
 
-    @staticmethod
-    def build_voting_response(self, message):
-        option = message.strip('!vote ')
-        print("Poll Option: ", option)
-        self.VOTING_BLOCK["text"]["text"] = option
+    # @staticmethod
+    # def build_voting_response(self, message):
+    #     option = message.strip('!vote ')
+    #     print("Poll Option: ", option)
+    #     self.VOTING_BLOCK["text"]["text"] = option
     
     def __init__(self,channel):
         self.channel = channel

@@ -146,7 +146,7 @@ def message(**payload):
         return start_onboarding(web_client, user_id, channel_id)
     elif text.lower().startswith('!vote'):
         #added new branch
-        Voting.build_voting_response()
+        # Voting.build_voting_response()
         return voting(web_client, user_id, channel_id)
 
 
